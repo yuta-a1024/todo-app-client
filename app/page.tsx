@@ -9,13 +9,21 @@ import { TodoType } from './types';
 import { API_URL } from '@/constants/url';
 
 export default function Home() {
-  // const allTodos = await fetch("API", { cache: "force-cache" });
+  //SSRを使う場合
+  // const allTodos = await fetch("API", { cache: "no-store" });
+
+  //TodoのタイトルをuseRefで取得
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  //カスタムフックスを呼び出し
   const { todos, isLoading, error, mutate } = useTodos();
 
-  const addTodo = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // console.log(inputRef.current?.value);
+
+    // fetchを使ってpostAPIを叩く
     const response = await fetch(`${API_URL}/createTodo`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -25,6 +33,7 @@ export default function Home() {
       }),
     });
 
+  // useSWRのmutateを使ってキャッシュ取得
     if(response.ok && todos) {
       const newTodo = await response.json();
       mutate([...todos, newTodo]);
@@ -37,11 +46,11 @@ export default function Home() {
   return (
     <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-32 py-4 px-4">
       <div className="px-4 py-2">
-        <h1 className="text-gray-800 font-bold text-2xl uppercase">To-Do List</h1>
+        <h1 className="text-gray-800 font-bold text-2xl uppercase select-none">🚀 ToDo List 🚀</h1>
       </div>
       <form 
         className="w-full max-w-sm mx-auto px-4 py-2"
-        onSubmit={(e: React.FormEvent) => addTodo(e)}
+        onSubmit={(e: React.FormEvent) => handleSubmit(e)}
       >
         <div className="flex items-center border-b-2 border-teal-500 py-2">
           <input

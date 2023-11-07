@@ -9,6 +9,7 @@ import { TodoType } from './types';
 import { API_URL } from '@/constants/url';
 
 export default function Home() {
+  
   //SSRを使う場合
   // const allTodos = await fetch("API", { cache: "no-store" });
 

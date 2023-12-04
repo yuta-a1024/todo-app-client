@@ -29,22 +29,20 @@ const Todo = ({ todo }: TodoProps) => {
           body: JSON.stringify({title: editedTitle}),
         }
       );
-
       // useSWRのmutateを使ってキャッシュ取得
       if (response.ok && todos) {
         const editedTodo = await response.json();
         const updatedTodos = todos.map((todo: TodoType) => todo.id === editedTodo.id ? editedTodo : todo);
         mutate(updatedTodos);
-      }
-    }
+      };
+    };
   };
 
   const handleDelete = async (id: number) => {
     setIsOpen(true);
   };
-  
-  
-  // Todo削除用APIを叩いてTodoを削除
+
+  // Todo削除用のAPIを叩いてTodoを削除
   const confirmedDelete = async (id: number) => {
     setIsOpen(false);
     const response = await fetch(
@@ -58,9 +56,9 @@ const Todo = ({ todo }: TodoProps) => {
     if (response.ok && todos) {
       const deletedTodo = await response.json();
       //削除したtodo以外を取り出す
-      const updatedTodos = todos.filter((todo: TodoType) => todo.id !== id)
+      const updatedTodos = todos.filter((todo: TodoType) => todo.id !== deletedTodo.id);
       mutate(updatedTodos);
-    }
+    };
   };
 
   const canceledDelete = () => {
@@ -103,7 +101,7 @@ const Todo = ({ todo }: TodoProps) => {
               {isEditing ? (
                 <input 
                   type="text" 
-                  className="border rounded py-1 px-2" 
+                  className="border rounded py-1 px-2 border-none outline-none outline-transparent" 
                   value={editedTitle} 
                   onChange={(e) =>  setEditedTitle(e.target.value)}
                 />
@@ -121,7 +119,7 @@ const Todo = ({ todo }: TodoProps) => {
               onClick={handleEdit}
               className="duration-150 bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-2 rounded"
             >
-              {isEditing ? "Save" : "✒"}
+              {isEditing ? "Save" : "Edit"}
             </button>
             <button
             onClick={() => handleDelete(todo.id)}

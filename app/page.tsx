@@ -1,6 +1,5 @@
 "use client";
 
-import Image from 'next/image'
 import Todo from './components/Todo';
 import useSWR from 'swr';
 import { useRef } from 'react';
@@ -19,12 +18,12 @@ export default function Home() {
   //カスタムフックスを呼び出し
   const { todos, isLoading, error, mutate } = useTodos();
 
+  //Addボタンを押した時
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     // console.log(inputRef.current?.value);
 
-    // fetchを使ってpostAPIを叩く
+    //postするAPIを叩く
     const response = await fetch(`${API_URL}/createTodo`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },

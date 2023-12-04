@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { TodoType } from "../types";
 import { API_URL } from "@/constants/url";
 
-// カスタムフックスを作ってリファクタリング
+// カスタムフックスを作ってグローバル状態で管理
 
 //fetcherの定義
 async function fetcher(key: string) {
